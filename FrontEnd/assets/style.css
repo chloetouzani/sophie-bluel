@@ -183,7 +183,7 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em 0 2em 0;
 }
 
 #portfolio ul {
@@ -208,4 +208,50 @@ footer nav ul {
 #portfolio button:hover {
   background-color: #1D6154;
   color: white;
+}
+
+/* login page */
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.login h2 {
+  margin-bottom: 37px;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.login form input {
+  border: 0;
+  box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+  height: 51px;
+  width: 379px;
+  margin-bottom: 30px;
+}
+
+.login button {
+  background-color: #1D6154;
+  border: 0; 
+  border-radius: 60px;
+  color: white;
+  font-family: Syne;
+  font-size: 14px;
+  padding: 10px;
+  width: 179px;
+  align-self: center;
+}
+
+.login a {
+  color : #3D3D3D;
+  align-self: center;
+  margin-top: 28px;
+  margin-bottom: 290px;
 }
