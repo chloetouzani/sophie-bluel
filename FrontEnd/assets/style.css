@@ -312,7 +312,7 @@ a:hover {
   margin-top: 0;
 }
 
-#popup {
+.popup {
   height: 688px;
   width: 630px;
   background-color: white;
@@ -326,7 +326,7 @@ a:hover {
   align-items: center;
 }
 
-#popup span {
+.popup span {
   display: flex;
   justify-content: end;
   align-items: center;
@@ -335,19 +335,19 @@ a:hover {
   margin-right: 30px;
 }
 
-#popup h3 {
+.popup h3 {
   margin-top: 10px;
   font-size: 26px;
 }
 
-#popup div {
+.popup div {
   height: 444px;
   width: 420px;
   border-bottom: 1px solid #b3b3b3;
   margin: 46px auto 38px;
 }
 
-#popup button {
+.popup button {
   border: 0;
   background-color: #1D6154;
   color: white;
@@ -360,4 +360,81 @@ a:hover {
 
 .fa-xmark:hover {
   cursor: pointer;
+}
+
+.edit-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  column-gap: 3px;
+}
+
+.edit-gallery img {
+  width: 78px;
+}
+
+.fa-trash-can {
+  color: white;
+  background-color: black;
+  padding: 4px;
+  position: relative;
+  bottom: 100px;
+  left: 54px;
+}
+
+#add-picture span{
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+#add-picture span i{
+  padding: 30px;
+}
+
+#add-picture-form{
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 169px;
+  width: 420px;
+  background-color: #E8F1F6;
+  border-radius: 3px;
+}
+
+#add-picture form i {
+  font-size: 50px;
+  color: #CBD6DC;
+  padding: 30px;
+}
+
+#add-picture input[type="file"]{
+  display: none;
+}
+
+#add-picture-form label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 173px;
+  height: 36px;
+  background-color: #CBD6DC;
+  color: #306685;
+  font-size: 14px; 
+  font-weight: 500;
+  border-radius: 50px;
+}
+
+#add-picture p {
+  font-size: 10px;
+  font-weight: 400;
+  color: #444444;
+}
+
+#info-form {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
 }

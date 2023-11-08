@@ -29,17 +29,39 @@
 </header>
 
 <main>
-	<section id="modify" class="hidden">
-		<div id="popup">
+	<article id="modify" class="hidden">
+		<section id="popup" class="popup">
 			<span><i class="fa-solid fa-xmark fa-lg"></i></span>
 			<h3>Galerie photo</h3>
-			<div>
-
+			<div class="edit-gallery">
 			</div>
 			<button>Ajouter une photo</button>
-		</div>
-
+		</section>
+		<section id="add-picture" class="popup hidden">
+			<span><i class="fa-solid fa-arrow-left fa-lg"></i><i class="fa-solid fa-xmark fa-lg"></i></span>
+			<h3>Ajout photo</h3>
+			<form>
+				<fieldset id="add-picture-form">
+					<i class="fa-regular fa-image fa-2xl"></i>
+					<input type="file" name="image-input" accept="image/*">
+					<label for="image-input">+ Ajouter photo</label>
+					<p>jpg, png : 4mo max</p>
+				</fieldset>
+				<fieldset id="info-form">
+					<label for="title">Titre</label>
+					<input type="text" name="title" id="title">
+					<label for="category">Catégorie</label>
+					<select name="category" id="category">
+						<option value="1">Objets</option>
+						<option value="2">Appartements</option>
+						<option value="3">Hôtels & restaurants</option>
+					</select>
+				</fieldset>
+				<button>Valider</button>
+			</form>
 	</section>
+	</article>
+
 
 	<div id="editor" class="hidden editor">
 		<p> <i class="fa-regular fa-pen-to-square"></i> Mode édition</p>
@@ -66,8 +88,8 @@
 		<ul>
 			<li><button class="all-btn">Tous</button></li>
 			<li><button class="object-btn">Objets</button></li>
-			<li><button class="Apart-btn">Apartements</button></li>
-			<li><button class="Hotels-btn">Hôtels & restaurants</button></li>
+			<li><button class="apart-btn">Apartements</button></li>
+			<li><button class="hotels-btn">Hôtels & restaurants</button></li>
 		</ul>
 		<div class="gallery">
 		</div>

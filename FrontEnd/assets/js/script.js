@@ -8,8 +8,9 @@ const userToken = window.localStorage.getItem("token");
 
 const objectsButton = document.querySelector(".object-btn");
 const allButton     = document.querySelector(".all-btn");
-const ApartButton   = document.querySelector(".Apart-btn");
-const HotelsButton  = document.querySelector(".Hotels-btn");
+const apartButton   = document.querySelector(".apart-btn");
+const hotelsButton  = document.querySelector(".hotels-btn");
+const editGallery   = document.querySelector(".edit-gallery");
 
 // ******************** VARIABLES ********************
 
@@ -34,6 +35,8 @@ function generateWorks (works) {
     worksDiv.appendChild(figure);
     figure.appendChild(img);
     figure.appendChild(figcaption);
+
+    console.log(works[i]);
   }
 }
 
@@ -110,11 +113,11 @@ function addListeners(works) {
     showObjectsCategory(works);
   })
 
-  ApartButton.addEventListener("click", () => {
+  apartButton.addEventListener("click", () => {
     showApartsCategory(works);
   })
 
-  HotelsButton.addEventListener("click", () => {
+  hotelsButton.addEventListener("click", () => {
     showHotelsCategory(works);
 })}
 
@@ -127,8 +130,8 @@ function removeHidden() {
 }
 
 function modifyGallery() {
-  let modifyButton = document.querySelector("#modify-btn");
-  let crossButton  = document.querySelector(".fa-xmark");
+  const modifyButton = document.querySelector("#modify-btn");
+  const crossButton  = document.querySelectorAll("fa-xmark");
   modifyButton.addEventListener("click", () => {
     document.querySelector("#modify").classList.remove("hidden");
   })
@@ -136,9 +139,58 @@ function modifyGallery() {
     document.querySelector("#modify").classList.add("hidden");
   })
 }
+
+function generateGalleryModified(){
+  for (let i = 0; i < works.length; i++) {
+    const figure      = document.createElement("figure");
+    const img         = document.createElement("img");
+    const trashImg    = document.createElement("i");
+
+    img.src               = works[i].imageUrl;
+    img.alt               = works[i].title;
+    img.id                = works[i].id;
+
+    trashImg.innerHTML          = "<i class=\"fa-solid fa-trash-can\"></i>";
+
+    editGallery.appendChild(figure);
+    figure.appendChild(img);
+    figure.appendChild(trashImg);
+  }
+}
+
+function deleteWork() {
+  const deletedWork = document.querySelector(".edit-gallery");
+  deletedWork.addEventListener("click", (event) => {
+    event.preventDefault();
+    const workID = event.target.id;
+    console.log(workID);
+
+    fetch(`http://localhost:5678/api/works/${workID}`, 
+    {method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${userToken}`
+    }}).then ((response) => {
+      if(response === 200) {
+        console.log("Work deleted");
+      }
+    })
+  })
+}
+
+function addWork() {
+  const addBtn = document.querySelector("#popup button");
+  const addPicture = document.querySelector("#add-picture");
+  addBtn.addEventListener("click", (event) => {
+    popup.classList.add("hidden");
+    addPicture.classList.remove("hidden");
+  })
+}
 // ******************** MAIN ********************
 
 generateWorks(works);
 addListeners(works);
+generateGalleryModified(works);
+deleteWork(works);
 removeHidden();
 modifyGallery();
+addWork();

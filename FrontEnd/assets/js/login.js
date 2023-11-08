@@ -14,36 +14,38 @@ function addLoginListener() {
   loginForm.addEventListener("click", function(event) {
     event.preventDefault();
 
-    let user = {
+    const user = {
       email: userEmail.value,
       password: userPassword.value
     };
-  
+    
     const UsefulCharges = JSON.stringify(user)
     console.log(UsefulCharges)
 
-    fetch(URL, {
-      method: "POST",
-      body: UsefulCharges,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(response => {
-      if (response.status === 200) {
-        response.json().then(loginResponse => {
-          let userToken = loginResponse.token
-          window.localStorage.setItem("token", userToken)
-          window.location.href = "index.html"
-        })
-      } else {
-        const error = document.querySelector("#login p")
-        error.classList.remove("hidden")
-        window.localStorage.removeItem("token")
-      }
-    })
-  });
-}
+    getToken(UsefulCharges);
+})};
 
+function getToken(UsefulCharges) {
+  fetch(URL, {
+    method: "POST",
+    body: UsefulCharges,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(response => {
+    if (response.status === 200) {
+      response.json().then(loginResponse => {
+        let userToken = loginResponse.token
+        window.localStorage.setItem("token", userToken)
+        window.location.href = "index.html"
+      })
+    } else {
+      const error = document.querySelector("#login p")
+      error.classList.remove("hidden")
+      window.localStorage.removeItem("token")
+    }
+  })
+};
 
 // ******************** MAIN ********************
 addLoginListener();
