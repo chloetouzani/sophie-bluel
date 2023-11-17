@@ -11,9 +11,20 @@ const allButton     = document.querySelector(".all-btn");
 const apartButton   = document.querySelector(".apart-btn");
 const hotelsButton  = document.querySelector(".hotels-btn");
 const editGallery   = document.querySelector(".edit-gallery");
+const modifyPopup   = document.querySelector("main article");
+const loginLink     = document.querySelector("#loginLink")
+
+const popup           = document.createElement("section");
+const crossButton     = document.createElement("i");
+const popupTitle      = document.createElement("h2");
+const mainText        = document.createElement("div");
+const modifyBtn       = document.createElement("button");
+
+const formAddPicture          = document.createElement("form");
 
 // ******************** VARIABLES ********************
-
+let isGalleryModified = false;
+let isPictureForm     = false;
 // ******************** FUNCTIONS ********************
 
 /**
@@ -36,7 +47,6 @@ function generateWorks (works) {
     figure.appendChild(img);
     figure.appendChild(figcaption);
 
-    console.log(works[i]);
   }
 }
 
@@ -121,30 +131,75 @@ function addListeners(works) {
     showHotelsCategory(works);
 })}
 
+
 function removeHidden() {
   if(userToken !== null) {
     document.querySelector("#modify-btn").classList.remove("hidden");
     document.querySelector("#editor").classList.remove("hidden")
     document.querySelector("header").classList.add("margin-top-109");
+    document.querySelector("#portfolio ul").classList.add("hidden");
+    document.querySelector("#portfolio header").classList.add("margin-bot-0");
+    loginLink.innerText = "logout"
   }
 }
 
-function modifyGallery() {
+function modifyPopupEventListener() {
   const modifyButton = document.querySelector("#modify-btn");
-  const crossButton  = document.querySelectorAll("fa-xmark");
+
   modifyButton.addEventListener("click", () => {
-    document.querySelector("#modify").classList.remove("hidden");
-  })
-  crossButton.addEventListener("click", () => {
-    document.querySelector("#modify").classList.add("hidden");
+    modifyPopup.id = "modify";
+    generateModifyPopup();
+
+    if (!isGalleryModified) {
+      if (isPictureForm) {
+        const editGallery =  document.querySelector(".edit-gallery");
+        editGallery.innerHTML = "";
+        generateGalleryModified(works);
+        isGalleryModified = true;
+        isPictureForm = false;
+      } else {
+        generateGalleryModified(works);
+        isGalleryModified = true;
+      }
+    }
+    console.log(isPictureForm)
+    modifyGallery();
+    deleteWork();
+    addPictureListener();
   })
 }
 
+function generateModifyPopup() {
+  mainText.classList.add("edit-gallery");
+  popup.classList.add("popup");
+
+  crossButton.innerHTML   = "<i class=\"fa-solid fa-xmark fa-lg\"></i>";
+  popupTitle.innerText    = "Galerie photo";
+  modifyBtn.innerText = "Ajouter une photo";
+
+  modifyPopup.appendChild(popup);
+  popup.appendChild(crossButton);
+  popup.appendChild(popupTitle);
+  popup.appendChild(mainText);
+  popup.appendChild(modifyBtn);
+}
+
+function modifyGallery() {
+  const crossButton  = document.querySelector(".fa-xmark");
+    crossButton.addEventListener("click", () => {
+      const editGallery = document.querySelector(".edit-gallery");
+      editGallery.innerHTML = "";
+      modifyPopup.innerHTML = "";
+      modifyPopup.id = "";
+      isGalleryModified = false;
+})}
+
 function generateGalleryModified(){
   for (let i = 0; i < works.length; i++) {
-    const figure      = document.createElement("figure");
-    const img         = document.createElement("img");
-    const trashImg    = document.createElement("i");
+    const modifyGallery = document.querySelector(".edit-gallery");
+    const figure        = document.createElement("figure");
+    const img           = document.createElement("img");
+    const trashImg      = document.createElement("i");
 
     img.src               = works[i].imageUrl;
     img.alt               = works[i].title;
@@ -152,7 +207,7 @@ function generateGalleryModified(){
 
     trashImg.innerHTML          = "<i class=\"fa-solid fa-trash-can\"></i>";
 
-    editGallery.appendChild(figure);
+    modifyGallery.appendChild(figure);
     figure.appendChild(img);
     figure.appendChild(trashImg);
   }
@@ -163,7 +218,6 @@ function deleteWork() {
   deletedWork.addEventListener("click", (event) => {
     event.preventDefault();
     const workID = event.target.id;
-    console.log(workID);
 
     fetch(`http://localhost:5678/api/works/${workID}`, 
     {method: "DELETE",
@@ -177,20 +231,96 @@ function deleteWork() {
   })
 }
 
-function addWork() {
-  const addBtn = document.querySelector("#popup button");
-  const addPicture = document.querySelector("#add-picture");
-  addBtn.addEventListener("click", (event) => {
-    popup.classList.add("hidden");
-    addPicture.classList.remove("hidden");
+function addPictureListener() {
+  const editGallery = document.querySelector(".edit-gallery");
+  const addBtn      = document.querySelector(".popup button");
+
+  addBtn.addEventListener("click", () => {
+    isGalleryModified = true;
+    editGallery.innerHTML = "";
+    isPictureForm = false;
+    if (!isPictureForm) {
+      editGallery.innerHTML = "";
+      popupTitle.innerText = "Ajout photo";
+      modifyBtn.innerText = "Valider";
+      PictureForm();
+      titleAndCategoryForm();
+      isGalleryModified = false;
+      isPictureForm = true;
+  }
+  console.log(isPictureForm)
   })
+}
+
+function PictureForm() {
+  const editGallery   = document.querySelector(".edit-gallery");
+  const fieldsetImg     = document.createElement("fieldset");
+  const logoImg       = document.createElement("i");
+  const inputImg      = document.createElement("input");
+  const labelImg      = document.createElement("label");
+  const imgFormat     = document.createElement("p");
+
+fieldsetImg.id = "add-picture-form";
+logoImg.innerHTML = "<i class=\"fa-regular fa-image fa-2xl\"></i>";
+
+inputImg.type = "file";
+inputImg.name = "image-input";
+inputImg.accept = "image/*";
+
+labelImg.htmlFor = "image-input";
+labelImg.innerText = "+ Ajouter photo";
+
+imgFormat.innerText = "jpg, png : 4mo max";
+
+
+editGallery.appendChild(formAddPicture);
+formAddPicture.appendChild(fieldsetImg);
+fieldsetImg.appendChild(logoImg);
+fieldsetImg.appendChild(inputImg);
+fieldsetImg.appendChild(labelImg);
+fieldsetImg.appendChild(imgFormat);
+}
+
+function titleAndCategoryForm() {
+  const fieldsetTexts    = document.createElement("fieldset");
+  const inputTitle       = document.createElement("input");
+  const selectCategory   = document.createElement("select");
+  const optionCategory1  = document.createElement("option");
+  const optionCategory2  = document.createElement("option");
+  const optionCategory3  = document.createElement("option");
+  const labelTitle       = document.createElement("label");
+  const labelCategory    = document.createElement("label");
+
+inputTitle.type       = "text";
+inputTitle.name       = "title";
+inputTitle.id         = "title";
+labelTitle.htmlFor    = "title";
+labelTitle.innerText  = "Titre";
+
+selectCategory.name       = "category";
+selectCategory.id         = "category";
+optionCategory1.value     = "1";
+optionCategory1.innerText = "Objets";
+optionCategory2.value     = "2";
+optionCategory2.innerText = "Appartements";
+optionCategory3.value     = "3";
+optionCategory3.innerText = "Hôtels & restaurants";
+labelCategory.htmlFor     = "category";
+labelCategory.innerText   = "Catégorie";
+
+formAddPicture.appendChild(fieldsetTexts);
+fieldsetTexts.appendChild(labelTitle);
+fieldsetTexts.appendChild(inputTitle);
+fieldsetTexts.appendChild(labelCategory);
+fieldsetTexts.appendChild(selectCategory);
+selectCategory.appendChild(optionCategory1);
+selectCategory.appendChild(optionCategory2);
+selectCategory.appendChild(optionCategory3);
 }
 // ******************** MAIN ********************
 
 generateWorks(works);
 addListeners(works);
-generateGalleryModified(works);
-deleteWork(works);
+modifyPopupEventListener();
 removeHidden();
-modifyGallery();
-addWork();
+

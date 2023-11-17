@@ -20,7 +20,6 @@ function addLoginListener() {
     };
     
     const UsefulCharges = JSON.stringify(user)
-    console.log(UsefulCharges)
 
     getToken(UsefulCharges);
 })};

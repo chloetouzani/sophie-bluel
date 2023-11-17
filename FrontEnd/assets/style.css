@@ -326,7 +326,7 @@ a:hover {
   align-items: center;
 }
 
-.popup span {
+.popup > i {
   display: flex;
   justify-content: end;
   align-items: center;
@@ -335,7 +335,13 @@ a:hover {
   margin-right: 30px;
 }
 
-.popup h3 {
+.popup h2 {
+  color: black;
+  font-size: 26px;
+  font-weight: 400;
+  font-family: Work Sans;
+  font-style: normal;
+  line-height: normal;
   margin-top: 10px;
   font-size: 26px;
 }
@@ -381,39 +387,37 @@ a:hover {
   left: 54px;
 }
 
-#add-picture span{
+[id="add-picture"] span{
   display: flex;
   justify-content: space-between;
   margin: 0;
 }
 
-#add-picture span i{
+[id="add-picture"] span i{
   padding: 30px;
 }
 
-#add-picture-form{
-  margin-top: 36px;
+[id="add-picture-form"]{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   height: 169px;
   width: 420px;
   background-color: #E8F1F6;
   border-radius: 3px;
 }
 
-#add-picture form i {
-  font-size: 50px;
+[id="add-picture-form"] i {
+  font-size: 76px;
   color: #CBD6DC;
-  padding: 30px;
 }
 
-#add-picture input[type="file"]{
+[id="add-picture-form"] [type="file"]{
   display: none;
 }
 
-#add-picture-form label {
+[id="add-picture-form"] label {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -427,7 +431,7 @@ a:hover {
   border-radius: 50px;
 }
 
-#add-picture p {
+[id="add-picture-form"] p {
   font-size: 10px;
   font-weight: 400;
   color: #444444;
@@ -437,4 +441,19 @@ a:hover {
   display: flex;
   flex-direction: column;
   padding: 30px 0;
+}
+
+#portfolio header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: -76px;
+}
+
+#portfolio h2 {
+  margin: 0 30px;
+}
+
+.margin-bot-0 {
+  margin-bottom: 0;
 }
