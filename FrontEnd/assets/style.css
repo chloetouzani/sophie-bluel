@@ -230,8 +230,9 @@ footer nav ul {
   gap: 6px;
 }
 
-#login form input {
+.input {
   border: 0;
+  background-color: white;
   box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
   height: 51px;
   width: 379px;
@@ -364,6 +365,13 @@ a:hover {
   font-weight: 700;
 }
 
+.popup nav {
+  display: flex;
+  justify-content: space-between;
+  width: 571px;
+  padding: 26px 30px 0;
+}
+
 .fa-xmark:hover {
   cursor: pointer;
 }
@@ -456,4 +464,27 @@ a:hover {
 
 .margin-bot-0 {
   margin-bottom: 0;
+}
+
+.text-fieldset {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50%;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+#image-preview {
+  height: 100%;
+  width: 420px;
+  object-fit: contain;
+}
+
+.display-none {
+  display: none;
 }
