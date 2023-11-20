@@ -373,9 +373,9 @@ function modifyPopupEventListener() {
       }
     }
 
-    modifyGallery();
-    deleteWork(); 
-    addPictureListener();
+  modifyGallery();
+  deleteWork(); 
+  addPictureListener();
   })
 }
 
@@ -389,6 +389,7 @@ function addPictureListener() {
 
     if (!isPictureForm) {
       editGallery.innerHTML = "";
+      fieldsetImg.innerHTML = "";
       formAddPicture.innerHTML = "";
       popupTitle.innerText = "Ajout photo";
       modifyBtn.innerText = "Valider";
