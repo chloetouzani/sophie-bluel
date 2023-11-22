@@ -22,9 +22,10 @@ const popupTitle      = document.createElement("h2");
 const mainText        = document.createElement("div");
 const modifyBtn       = document.createElement("button");
 
-const formAddPicture          = document.createElement("form");
+const formAddPicture  = document.createElement("form");
 const fieldsetImg     = document.createElement("fieldset");
 const imgPreview      = document.createElement("img");
+const missingText     = document.createElement("p");
 
 // ******************** VARIABLES ********************
 let isGalleryModified = false;
@@ -63,6 +64,7 @@ function generateModifyPopup() {
   backArrowButton.innerHTML = "<i class=\"fa-solid fa-arrow-left\"></i>";
   popupTitle.innerText    = "Galerie photo";
   modifyBtn.innerText = "Ajouter une photo";
+  modifyBtn.id = "new-img-btn";
 
   backArrowButton.id = "back-arrow";
   backArrowButton.classList.add("hidden");
@@ -168,11 +170,16 @@ function titleAndCategoryForm() {
   labelCategory.htmlFor     = "category";
   labelCategory.innerText   = "Catégorie";
 
+  missingText.innerText = "Veuillez remplir tous les champs";
+  missingText.id = "error";
+  missingText.classList.add("hidden");
+
   formAddPicture.appendChild(fieldsetTexts);
   fieldsetTexts.appendChild(labelTitle);
   fieldsetTexts.appendChild(inputTitle);
   fieldsetTexts.appendChild(labelCategory);
   fieldsetTexts.appendChild(selectCategory);
+  fieldsetTexts.appendChild(missingText);
   selectCategory.appendChild(defaultOption);
   selectCategory.appendChild(optionCategory1);
   selectCategory.appendChild(optionCategory2);
@@ -295,6 +302,7 @@ function backArrow() {
       editGallery.innerHTML = "";
       popupTitle.innerText = "Galerie photo";
       modifyBtn.innerText = "Ajouter une photo";
+      modifyBtn.id = "new-img-btn";
       generateGalleryModified(works);
       isGalleryModified = true;
       isPictureForm = false;
@@ -306,34 +314,66 @@ function backArrow() {
 function displayNewImg() {
   const imageInputContainer = document.querySelector("#add-picture-form");
   const inputImage = document.querySelector("#image-input");
-  const previewLabel = document.querySelector("#label-img");
   const imagePreview = document.querySelector("#image-preview");
   
   inputImage.addEventListener("change", function() {
-    // Vérifier si un fichier a été sélectionné
-    if (inputImage.files && inputImage.files[0]) {
       imageInputContainer.innerHTML = "";
       imagePreview.classList.remove("display-none");
       imageInputContainer.appendChild(imagePreview);
 
       const reader = new FileReader();
   
-      reader.onload = function(e) {
-        imagePreview.src = e.target.result;
+      reader.onload = function(event) {
+        imagePreview.src = event.target.result;
       };
-  
-      // Lire le contenu du fichier en tant que data URL
+      
       reader.readAsDataURL(inputImage.files[0]);
-  
-      // Mettre à jour le texte du label avec le nom du fichier
-      previewLabel.textContent = inputImage.files[0].name;
-    } else {
-      // Réinitialiser l'aperçu de l'image et le texte du label
-      imagePreview.src = "#";
-      previewLabel.textContent = "+ Ajouter photo";
-    }
   });
   }
+
+function sendNewPicture() {
+  const formdata = new FormData();
+  const newImgId = works.length + 1;
+  const title = document.querySelector("#title");
+  const category = document.querySelector("#category");
+  const imagePreview = document.querySelector("#image-preview");
+  const userId = userToken;
+
+  formdata.append("id", newImgId);
+  formdata.append("title", title.value);
+  formdata.append("imageUrl", imagePreview.src);
+  formdata.append("category", category.value);
+  formdata.append("userId", userId);
+
+  console.log(formdata);
+
+  //const request = new XMLHttpRequest();
+  //request.open("POST", "http://localhost:5678/api/works");
+  //request.setRequestHeader("Authorization", `Bearer ${userToken}`);
+  //request.send(formdata);
+  }
+
+
+function formVerification() {
+  const title = document.querySelector("#title");
+  const category = document.querySelector("#category");
+  const form = document.querySelector(".edit-gallery form");
+  let regex = new RegExp("^[A-Za-z0-9-_]+$");
+  let regexResult = regex.test(title.value);
+
+    if (regexResult === false && category.value === "") {
+      missingText.classList.remove("hidden");
+    } else {
+      if (regexResult === false) {
+        missingText.innerText = "Veuillez renseigner un titre valide";
+        missingText.classList.remove("hidden");
+      }else {
+        sendNewPicture();
+      }
+
+    }
+  }
+
 
   //**** EVENT LISTENERS FUNCTIONS ****\\
 function addListeners(works) {
@@ -364,6 +404,8 @@ function modifyPopupEventListener() {
       if (isPictureForm) {
         const editGallery =  document.querySelector(".edit-gallery");
         editGallery.innerHTML = "";
+        modifyBtn.id = "";
+              missingText.classList.add("hidden");
         generateGalleryModified(works);
         isGalleryModified = true;
         isPictureForm = false;
@@ -375,13 +417,13 @@ function modifyPopupEventListener() {
 
   modifyGallery();
   deleteWork(); 
-  addPictureListener();
+  popupButtonEventListener()
   })
 }
 
 function addPictureListener() {
   const editGallery = document.querySelector(".edit-gallery");
-  const addBtn      = document.querySelector(".popup button");
+  const addBtn      = document.querySelector("#new-img-btn");
 
   addBtn.addEventListener("click", () => {
     backArrowButton.classList.remove("hidden");
@@ -391,17 +433,31 @@ function addPictureListener() {
       editGallery.innerHTML = "";
       fieldsetImg.innerHTML = "";
       formAddPicture.innerHTML = "";
+      modifyBtn.id = "add-btn";
       popupTitle.innerText = "Ajout photo";
       modifyBtn.innerText = "Valider";
       PictureForm();
       titleAndCategoryForm();
       isGalleryModified = false;
       isPictureForm = true;
+      popupButtonEventListener();
   }
   displayNewImg();
   })
 }
 
+function popupButtonEventListener() {
+  const addBtn = document.querySelector("#add-btn");
+
+  if (modifyBtn.id === "new-img-btn") {
+    addPictureListener();
+} else {
+  addBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    formVerification();
+})}
+}
 // ******************** MAIN ********************
 
 generateWorks(works);

@@ -488,3 +488,8 @@ a:hover {
 .display-none {
   display: none;
 }
+
+[id="error"] {
+  text-align: center;
+  color: red;
+}
