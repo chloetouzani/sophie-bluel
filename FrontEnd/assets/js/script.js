@@ -24,6 +24,7 @@ const modifyBtn       = document.createElement("button");
 
 const formAddPicture  = document.createElement("form");
 const fieldsetImg     = document.createElement("fieldset");
+const fieldsetTexts    = document.createElement("fieldset");
 const imgPreview      = document.createElement("img");
 const missingText     = document.createElement("p");
 
@@ -52,10 +53,12 @@ function generateWorks (works) {
     worksDiv.appendChild(figure);
     figure.appendChild(img);
     figure.appendChild(figcaption);
-
   }
 }
 
+/**
+ * Generates a popup to modify the gallery.
+ */
 function generateModifyPopup() {
   mainText.classList.add("edit-gallery");
   popup.classList.add("popup");
@@ -78,6 +81,10 @@ function generateModifyPopup() {
   popup.appendChild(modifyBtn);
 }
 
+/**
+ * Generates a modified gallery by iterating through the `works` array and creating
+ * figure elements with images and trash icons for each work.
+ */
 function generateGalleryModified(){
   for (let i = 0; i < works.length; i++) {
     const modifyGallery = document.querySelector(".edit-gallery");
@@ -97,7 +104,10 @@ function generateGalleryModified(){
   }
 }
 
-function PictureForm() {
+/**
+ * Generates a form to add a new picture.
+ */
+function generatePictureForm() {
   const editGallery   = document.querySelector(".edit-gallery");
   const logoImg       = document.createElement("i");
   const inputImg      = document.createElement("input");
@@ -132,29 +142,46 @@ function PictureForm() {
   fieldsetImg.appendChild(imgPreview);
 }
 
-function titleAndCategoryForm() {
-  const fieldsetTexts    = document.createElement("fieldset");
+/**
+ * Generates a title form by creating and appending the necessary HTML elements.
+ */
+function generateTitleForm() {
   const inputTitle       = document.createElement("input");
-  const selectCategory   = document.createElement("select");
-  const defaultOption    = document.createElement("option");
-  const optionCategory1  = document.createElement("option");
-  const optionCategory2  = document.createElement("option");
-  const optionCategory3  = document.createElement("option");
   const labelTitle       = document.createElement("label");
-  const labelCategory    = document.createElement("label");
 
   fieldsetTexts.classList.add("text-fieldset");
   inputTitle.classList.add("input");
   inputTitle.classList.add("width-100");
-  selectCategory.classList.add("input");
-  selectCategory.classList.add("width-100");
-
 
   inputTitle.type       = "text";
   inputTitle.name       = "title";
   inputTitle.id         = "title";
   labelTitle.htmlFor    = "title";
   labelTitle.innerText  = "Titre";
+
+  missingText.innerText = "Veuillez remplir tous les champs";
+  missingText.classList.add("error")
+  missingText.classList.add("hidden");
+
+  formAddPicture.appendChild(fieldsetTexts);
+  fieldsetTexts.appendChild(labelTitle);
+  fieldsetTexts.appendChild(inputTitle);
+  fieldsetTexts.appendChild(missingText);
+}
+
+/**
+ * Generates a category form with select options for different categories.
+ */
+function generateCategoryForm() {
+  const selectCategory   = document.createElement("select");
+  const defaultOption    = document.createElement("option");
+  const optionCategory1  = document.createElement("option");
+  const optionCategory2  = document.createElement("option");
+  const optionCategory3  = document.createElement("option");
+  const labelCategory    = document.createElement("label");
+
+  selectCategory.classList.add("input");
+  selectCategory.classList.add("width-100");
 
   selectCategory.name       = "category";
   selectCategory.id         = "category";
@@ -169,22 +196,14 @@ function titleAndCategoryForm() {
   optionCategory3.innerText = "Hôtels & restaurants";
   labelCategory.htmlFor     = "category";
   labelCategory.innerText   = "Catégorie";
-
-  missingText.innerText = "Veuillez remplir tous les champs";
-  missingText.id = "error";
-  missingText.classList.add("hidden");
-
-  formAddPicture.appendChild(fieldsetTexts);
-  fieldsetTexts.appendChild(labelTitle);
-  fieldsetTexts.appendChild(inputTitle);
-  fieldsetTexts.appendChild(labelCategory);
-  fieldsetTexts.appendChild(selectCategory);
-  fieldsetTexts.appendChild(missingText);
   selectCategory.appendChild(defaultOption);
   selectCategory.appendChild(optionCategory1);
   selectCategory.appendChild(optionCategory2);
   selectCategory.appendChild(optionCategory3);
   selectCategory.selectedIndex = -1;
+
+  fieldsetTexts.appendChild(labelCategory);
+  fieldsetTexts.appendChild(selectCategory);
 }
 
   //**** OTHER FUNCTIONS ****\\
@@ -249,8 +268,6 @@ function showHotelsCategory(works) {
 
 /**
  * Adds event listeners to buttons and calls corresponding functions.
- *
- * @param {Array} works - An array of works.
  */
 function removeHidden() {
   if(userToken !== null) {
@@ -263,6 +280,13 @@ function removeHidden() {
   }
 }
 
+/**
+ * Modifies the gallery by adding an event listener to the cross button. When the cross button is clicked,
+ * it clears the content of the edit gallery and modify popup, removes the ID from modify popup, and sets the
+ * isGalleryModified flag to false.
+ *
+ * @param {Element} crossButton - The cross button element to attach the event listener to.
+ */
 function modifyGallery() {
   const crossButton  = document.querySelector(".fa-xmark");
     crossButton.addEventListener("click", () => {
@@ -273,6 +297,12 @@ function modifyGallery() {
       isGalleryModified = false;
 })}
 
+/**
+ * Deletes a work from the server.
+ *
+ * @param {type} paramName - description of parameter
+ * @return {type} description of return value
+ */
 function deleteWork() {
   const galleryImgs = document.querySelectorAll(".edit-gallery img");
   galleryImgs.forEach((img) => {
@@ -294,7 +324,12 @@ function deleteWork() {
 
 }
 
-function backArrow() {
+/**
+ * Sets up an event listener for the back arrow button and performs actions when clicked.
+ *
+ * @param {Event} event - The click event object.
+ */
+function goBackArrow () {
   const editGallery = document.querySelector(".edit-gallery");
   const backArrow = document.querySelector(".fa-arrow-left");
   backArrow.addEventListener("click", () => {
@@ -311,6 +346,9 @@ function backArrow() {
   })
 }
 
+/**
+ * Displays a new image based on user input.
+ */
 function displayNewImg() {
   const imageInputContainer = document.querySelector("#add-picture-form");
   const inputImage = document.querySelector("#image-input");
@@ -320,6 +358,7 @@ function displayNewImg() {
       imageInputContainer.innerHTML = "";
       imagePreview.classList.remove("display-none");
       imageInputContainer.appendChild(imagePreview);
+      imageInputContainer.appendChild(inputImage);
 
       const reader = new FileReader();
   
@@ -331,34 +370,42 @@ function displayNewImg() {
   });
   }
 
+/**
+ * Sends a new picture to the server.
+ *
+ * @param {FormData} formdata - The form data containing the picture information.
+ * @return {Promise} A Promise that resolves when the picture is successfully sent.
+ */
+
 function sendNewPicture() {
   const formdata = new FormData();
-  const newImgId = works.length + 1;
   const title = document.querySelector("#title");
   const category = document.querySelector("#category");
-  const imagePreview = document.querySelector("#image-preview");
-  const userId = userToken;
+  const inputImage = document.querySelector("#image-input");
 
-  formdata.append("id", newImgId);
   formdata.append("title", title.value);
-  formdata.append("imageUrl", imagePreview.src);
+  formdata.append("image", inputImage.files[0]);
   formdata.append("category", category.value);
-  formdata.append("userId", userId);
 
   console.log(formdata);
 
-  //const request = new XMLHttpRequest();
-  //request.open("POST", "http://localhost:5678/api/works");
-  //request.setRequestHeader("Authorization", `Bearer ${userToken}`);
-  //request.send(formdata);
+  fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${userToken}`
+    },
+    body: formdata
+  })
   }
 
 
-function formVerification() {
+/**
+ * Performs form verification and sends new picture if form is valid.
+ */
+function verifyForm() {
   const title = document.querySelector("#title");
   const category = document.querySelector("#category");
-  const form = document.querySelector(".edit-gallery form");
-  let regex = new RegExp("^[A-Za-z0-9-_]+$");
+  let regex = new RegExp("^[A-Za-z0-9-_\s]");
   let regexResult = regex.test(title.value);
 
     if (regexResult === false && category.value === "") {
@@ -370,12 +417,16 @@ function formVerification() {
       }else {
         sendNewPicture();
       }
-
     }
   }
 
-
   //**** EVENT LISTENERS FUNCTIONS ****\\
+  
+/**
+ * Adds event listeners to buttons and calls corresponding functions.
+ *
+ * @param {Array} works - The array of works
+ */
 function addListeners(works) {
   allButton.addEventListener("click", () => {
     showAllCategories(works);
@@ -393,6 +444,9 @@ function addListeners(works) {
     showHotelsCategory(works);
 })}
 
+/**
+ * Modify the event listener for the popup button.
+ */
 function modifyPopupEventListener() {
   const modifyButton = document.querySelector("#modify-btn");
 
@@ -417,17 +471,20 @@ function modifyPopupEventListener() {
 
   modifyGallery();
   deleteWork(); 
-  popupButtonEventListener()
+  addPopupButtonEventListener()
   })
 }
 
+/**
+ * Adds a listener to the "Add" button for adding a picture.
+ */
 function addPictureListener() {
   const editGallery = document.querySelector(".edit-gallery");
   const addBtn      = document.querySelector("#new-img-btn");
 
   addBtn.addEventListener("click", () => {
     backArrowButton.classList.remove("hidden");
-    backArrow();
+    goBackArrow();
 
     if (!isPictureForm) {
       editGallery.innerHTML = "";
@@ -436,17 +493,21 @@ function addPictureListener() {
       modifyBtn.id = "add-btn";
       popupTitle.innerText = "Ajout photo";
       modifyBtn.innerText = "Valider";
-      PictureForm();
-      titleAndCategoryForm();
+      generatePictureForm();
+      generateTitleForm();
+      generateCategoryForm();
       isGalleryModified = false;
       isPictureForm = true;
-      popupButtonEventListener();
+      addPopupButtonEventListener();
   }
   displayNewImg();
   })
 }
 
-function popupButtonEventListener() {
+/**
+ * Listens for the event of clicking the popup button.
+ */
+function addPopupButtonEventListener() {
   const addBtn = document.querySelector("#add-btn");
 
   if (modifyBtn.id === "new-img-btn") {
@@ -455,7 +516,7 @@ function popupButtonEventListener() {
   addBtn.addEventListener("click", (event) => {
     event.preventDefault();
 
-    formVerification();
+    verifyForm();
 })}
 }
 // ******************** MAIN ********************

@@ -489,7 +489,7 @@ a:hover {
   display: none;
 }
 
-[id="error"] {
+.error {
   text-align: center;
   color: red;
 }
