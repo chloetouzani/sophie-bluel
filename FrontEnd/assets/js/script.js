@@ -2,7 +2,7 @@
 
 // ******************** CONSTANTS ********************
 const backEnd = await fetch("http://localhost:5678/api/works");
-const works 	= await backEnd.json();
+const works   = await backEnd.json();
 
 const userToken = window.localStorage.getItem("token");
 
@@ -12,7 +12,7 @@ const apartButton   = document.querySelector(".apart-btn");
 const hotelsButton  = document.querySelector(".hotels-btn");
 const editGallery   = document.querySelector(".edit-gallery");
 const modifyPopup   = document.querySelector("main article");
-const loginLink     = document.querySelector("#loginLink")
+const loginLink     = document.querySelector("#loginLink");
 
 const popup           = document.createElement("section");
 const crossButton     = document.createElement("i");
@@ -160,7 +160,7 @@ function generateTitleForm() {
   labelTitle.innerText  = "Titre";
 
   missingText.innerText = "Veuillez remplir tous les champs";
-  missingText.classList.add("error")
+  missingText.classList.add("error");
   missingText.classList.add("hidden");
 
   formAddPicture.appendChild(fieldsetTexts);
@@ -293,6 +293,7 @@ function modifyGallery() {
       const editGallery = document.querySelector(".edit-gallery");
       editGallery.innerHTML = "";
       modifyPopup.innerHTML = "";
+      fieldsetTexts.innerHTML = "";
       modifyPopup.id = "";
       isGalleryModified = false;
 })}
@@ -335,6 +336,7 @@ function goBackArrow () {
   backArrow.addEventListener("click", () => {
     if (!isGalleryModified) {
       editGallery.innerHTML = "";
+      fieldsetTexts.innerHTML = "";
       popupTitle.innerText = "Galerie photo";
       modifyBtn.innerText = "Ajouter une photo";
       modifyBtn.id = "new-img-btn";
