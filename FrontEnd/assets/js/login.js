@@ -20,10 +20,9 @@ function addLoginListener() {
     };
     
     const UsefulCharges = JSON.stringify(user)
-    console.log(UsefulCharges)
 
     getToken(UsefulCharges);
-})};
+})}
 
 function getToken(UsefulCharges) {
   fetch(URL, {
@@ -45,7 +44,7 @@ function getToken(UsefulCharges) {
       window.localStorage.removeItem("token")
     }
   })
-};
+}
 
 // ******************** MAIN ********************
 addLoginListener();
