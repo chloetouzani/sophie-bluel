@@ -315,14 +315,9 @@ function deleteWork() {
     {method: "DELETE",
     headers: {
       "Authorization": `Bearer ${userToken}`
-    }}).then ((response) => {
-      if(response === 200) {
-        console.log("Work deleted");
-      }
-    })
+    }})
   })
   })
-
 }
 
 /**
@@ -419,6 +414,14 @@ function verifyForm() {
       }else {
         sendNewPicture();
       }
+    }
+  }
+
+  function logout () {
+    if (userToken !== null) {
+      loginLink.addEventListener("click", () => {
+        localStorage.clear();
+      })
     }
   }
 
@@ -527,4 +530,4 @@ generateWorks(works);
 addListeners(works);
 modifyPopupEventListener();
 removeHidden();
-
+logout();

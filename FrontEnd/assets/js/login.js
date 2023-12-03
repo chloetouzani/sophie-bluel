@@ -41,7 +41,6 @@ function getToken(UsefulCharges) {
     } else {
       const error = document.querySelector("#login p")
       error.classList.remove("hidden")
-      window.localStorage.removeItem("token")
     }
   })
 }
